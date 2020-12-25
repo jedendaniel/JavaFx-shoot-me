@@ -1,0 +1,7 @@
+/shoot-me-client/target/
+/workspace.xml
+/vcs.xml
+.classpath
+.project
+.settings/
+*/target/**
