@@ -4,14 +4,14 @@ import dd.geometry.Geometry;
 import dd.player.Player;
 import javafx.scene.input.KeyCode;
 
-public class MoveUpCommand implements Command {
+public class MoveUpKeyCommand implements KeyCommand {
 
     private Player player;
 
-    public MoveUpCommand() {
+    public MoveUpKeyCommand() {
     }
 
-    public MoveUpCommand(Player player) {
+    public MoveUpKeyCommand(Player player) {
         this.player = player;
     }
 
@@ -27,6 +27,6 @@ public class MoveUpCommand implements Command {
 
     @Override
     public void execute() {
-        player.move(Geometry.UP);
+        player.moveCharacter(Geometry.UP);
     }
 }

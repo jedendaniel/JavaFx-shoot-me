@@ -1,43 +1,46 @@
 package dd.player;
 
 import dd.geometry.Geometry;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.robot.Robot;
-import javafx.scene.shape.Rectangle;
+import dd.object.GameObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private static final int SPEED = 3;
 
-    private Rectangle gameObject;
-    private Crosshair crosshair;
-    private Robot robot = new Robot();
+    private Character character;
+    private List<GameObject> gameObjects = new ArrayList<>();
 
-    public Player(Geometry geometry, Color color) {
-        gameObject = new Rectangle(10, 10, color);
-        gameObject.setX(geometry.getX());
-        gameObject.setY(geometry.getY());
-        crosshair = new Crosshair();
+    public Player(Character character) {
+        this.character = character;
+        gameObjects.addAll(character.getGameObjects());
     }
 
-    public List<Node> getNodes() {
-        return List.of(gameObject);
+    public void update() {
+        character.update();
     }
 
-    public Geometry getPosition() {
-        return new Geometry((int)gameObject.getX(), (int)gameObject.getY());
+    public List<GameObject> getGameObjects() {
+        return gameObjects;
     }
 
-    public void move(Geometry movement) {
-        gameObject.setX(gameObject.getX() + movement.getX() * SPEED);
-        gameObject.setY(gameObject.getY() + movement.getY() * SPEED);
-        robot.mouseMove(robot.getMousePosition().getX() + movement.getX() * SPEED,
-                robot.getMousePosition().getY() + movement.getY() * SPEED);
+    public void setCharacter(Character character) {
+        this.character = character;
     }
 
-    public Crosshair getCrosshair() {
-        return crosshair;
+    public Character getCharacter() {
+        return character;
+    }
+
+    public void moveCharacter(Geometry geometry) {
+        character.move(geometry);
+    }
+
+    public void shoot() {
+        character.shoot();
+    }
+
+    public void onMouseMove(Geometry newMousePosition) {
+        character.onMouseMove(newMousePosition);
     }
 }

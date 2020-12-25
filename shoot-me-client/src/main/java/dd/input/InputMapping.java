@@ -14,40 +14,53 @@ import static jdk.jshell.spi.ExecutionControl.NotImplementedException;
 
 public class InputMapping {
 
-    private static final List<Command> allCommands = List.of(
-            new MoveUpCommand(),
-            new MoveDownCommand(),
-            new MoveLeftCommand(),
-            new MoveRightCommand()
+    private static final List<KeyCommand> KEY_COMMANDS = List.of(
+            new MoveUpKeyCommand(),
+            new MoveDownKeyCommand(),
+            new MoveLeftKeyCommand(),
+            new MoveRightKeyCommand(),
+            new ShootKeyCommand()
     );
 
-    private Map<KeyCode, Command> inputConfiguration;
+    private static final List<MouseCommand> MOUSE_COMMANDS = List.of(
+            new MouseMoveCommand()
+    );
+
+    private Map<KeyCode, KeyCommand> keyboardConfiguration;
+    private Map<String, MouseCommand> mouseConfiguration;
 
     public InputMapping(Player player) {
         try {
-            inputConfiguration = loadConfigurationFromFile();
+            keyboardConfiguration = loadConfigurationFromFile();
         } catch (NotImplementedException e) {
-            inputConfiguration = loadDefaultConfiguration(player);
+            keyboardConfiguration = loadDefaultKeyBoardConfiguration(player);
+            mouseConfiguration = loadMouseConfiguration(player);
         }
     }
 
-    private Map<KeyCode, Command> loadConfigurationFromFile() throws NotImplementedException {
+    private Map<String, MouseCommand> loadMouseConfiguration(Player player) {
+        return MOUSE_COMMANDS.stream()
+                .peek(command -> command.setPlayer(player))
+                .collect(Collectors.toMap(MouseCommand::getEventTypeName, Function.identity()));
+    }
+
+    private Map<KeyCode, KeyCommand> loadConfigurationFromFile() throws NotImplementedException {
         throw new NotImplementedException("Not implemented");
     }
 
-    private Map<KeyCode, Command> loadDefaultConfiguration(Player player) {
-        return allCommands.stream()
+    private Map<KeyCode, KeyCommand> loadDefaultKeyBoardConfiguration(Player player) {
+        return KEY_COMMANDS.stream()
                 .peek(command -> command.setPlayer(player))
-                .collect(Collectors.toMap(Command::getDefaultKeyCode, Function.identity()));
+                .collect(Collectors.toMap(KeyCommand::getDefaultKeyCode, Function.identity()));
     }
 
-    public Optional<Command> getCommand(KeyCode code) {
-        return Optional.ofNullable(inputConfiguration.get(code));
+    public Optional<KeyCommand> getKeyCommand(KeyCode code) {
+        return Optional.ofNullable(keyboardConfiguration.get(code));
     }
 
     public void changeConfiguration(KeyCode oldCode, KeyCode updatedCode) throws ConflictException {
-        if (!inputConfiguration.containsKey(updatedCode) || oldCode == updatedCode) {
-            inputConfiguration.put(updatedCode, inputConfiguration.get(oldCode));
+        if (!keyboardConfiguration.containsKey(updatedCode) || oldCode == updatedCode) {
+            keyboardConfiguration.put(updatedCode, keyboardConfiguration.get(oldCode));
         } else {
             throw new ConflictException(String.format("%s already occupied", updatedCode.getName()));
         }
@@ -57,7 +70,11 @@ public class InputMapping {
         throw new NotImplementedException("Not implemented");
     }
 
-    public Map<KeyCode, Command> getInputConfiguration() {
-        return inputConfiguration;
+    public Map<KeyCode, KeyCommand> getKeyboardConfiguration() {
+        return keyboardConfiguration;
+    }
+
+    public Optional<MouseCommand> getMouseCommand(String name) {
+        return Optional.ofNullable(mouseConfiguration.get(name));
     }
 }

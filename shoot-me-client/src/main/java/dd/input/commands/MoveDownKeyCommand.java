@@ -4,14 +4,14 @@ import dd.geometry.Geometry;
 import dd.player.Player;
 import javafx.scene.input.KeyCode;
 
-public class MoveLeftCommand implements Command {
+public class MoveDownKeyCommand implements KeyCommand {
 
     private Player player;
 
-    public MoveLeftCommand() {
+    public MoveDownKeyCommand() {
     }
 
-    public MoveLeftCommand(Player player) {
+    public MoveDownKeyCommand(Player player) {
         this.player = player;
     }
 
@@ -22,11 +22,11 @@ public class MoveLeftCommand implements Command {
 
     @Override
     public KeyCode getDefaultKeyCode() {
-        return KeyCode.A;
+        return KeyCode.S;
     }
 
     @Override
     public void execute() {
-        player.move(Geometry.LEFT);
+        player.moveCharacter(Geometry.DOWN);
     }
 }

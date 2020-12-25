@@ -7,37 +7,50 @@ public class Geometry {
     public static Geometry LEFT = new Geometry(-1, 0);
     public static Geometry RIGHT = new Geometry(1, 0);
 
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
-    public Geometry(int x, int y) {
+    public Geometry(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public Geometry addCords(int x, int y) {
+    public Geometry addCords(double x, double y) {
         return new Geometry(this.x + x, this.y + y);
     }
 
+    public Geometry add(Geometry geometry) {
+        return new Geometry(this.x + geometry.getX(), this.y + geometry.getY());
+    }
+
+    public Geometry subtract(Geometry geometry) {
+        return new Geometry(this.x - geometry.getX(), this.y - geometry.getY());
+    }
+
     public static double getDistance(Geometry pos1, Geometry pos2) {
-        int x = pos2.x - pos1.x;
-        int y = pos2.y - pos1.y;
+        double x = pos2.x - pos1.x;
+        double y = pos2.y - pos1.y;
         return Math.sqrt(x * x + y * y);
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
+    }
+
+    @Override
+    public String toString() {
+        return "Geometry{" + "x=" + x + ", y=" + y + '}';
     }
 }

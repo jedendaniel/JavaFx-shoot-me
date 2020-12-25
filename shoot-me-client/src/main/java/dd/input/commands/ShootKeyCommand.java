@@ -1,18 +1,13 @@
 package dd.input.commands;
 
-import dd.geometry.Geometry;
 import dd.player.Player;
 import javafx.scene.input.KeyCode;
 
-public class MoveRightCommand implements Command {
+public class ShootKeyCommand implements KeyCommand {
 
     private Player player;
 
-    public MoveRightCommand() {
-    }
-
-    public MoveRightCommand(Player player) {
-        this.player = player;
+    public ShootKeyCommand() {
     }
 
     @Override
@@ -22,11 +17,12 @@ public class MoveRightCommand implements Command {
 
     @Override
     public KeyCode getDefaultKeyCode() {
-        return KeyCode.D;
+        return KeyCode.SPACE;
     }
 
     @Override
     public void execute() {
-        player.move(Geometry.RIGHT);
+        player.shoot();
+        System.out.println("Careful, player is shooting!");
     }
 }
